@@ -13,7 +13,19 @@ A property sales and business automation project.
 
 ## Current progress
 
-Initial project setup only. Application features have not been implemented yet.
+The initial FastAPI application is available with this endpoint:
+
+- `GET /` returns `{"message": "PropertyOps AI API is running"}`.
+
+## Run locally
+
+Start the development server from the project root:
+
+```bash
+python -m uvicorn app.main:app --reload
+```
+
+Open the API at [http://127.0.0.1:8000](http://127.0.0.1:8000) or view the interactive documentation at [http://127.0.0.1:8000/docs](http://127.0.0.1:8000/docs).
 
 ## Initial stack
 
