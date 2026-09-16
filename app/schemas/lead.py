@@ -1,7 +1,17 @@
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, EmailStr, Field
+from typing import Literal
 
+class LeadStatusUpdate(BaseModel):
+    """Status accepted when updating a lead."""
+
+    status: Literal[
+        "new",
+        "contacted",
+        "qualified",
+        "closed",
+    ]
 
 class LeadCreate(BaseModel):
     """Information accepted when someone submits an enquiry."""
