@@ -5,6 +5,11 @@ from sqlalchemy.orm import Session
 from app.database import get_db
 from app.models import FollowUpTask, Lead
 from app.schemas import FollowUpTaskCreate, FollowUpTaskResponse
+from app.schemas import (
+    FollowUpTaskCreate,
+    FollowUpTaskResponse,
+    FollowUpTaskStatusUpdate,
+)
 
 
 router = APIRouter(
@@ -57,3 +62,30 @@ def get_all_follow_up_tasks(
     tasks = database_session.scalars(statement).all()
 
     return tasks
+
+
+@router.patch(
+    "/{task_id}/status",
+    response_model=FollowUpTaskResponse,
+)
+def update_follow_up_task_status(
+    task_id: int,
+    status_data: FollowUpTaskStatusUpdate,
+    database_session: Session = Depends(get_db),
+):
+    """Update a follow-up task's status."""
+
+    task = database_session.get(FollowUpTask, task_id)
+
+    if task is None:
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail="Follow-up task not found",
+        )
+
+    task.status = status_data.status
+
+    database_session.commit()
+    database_session.refresh(task)
+
+    return task

@@ -1,6 +1,7 @@
 from datetime import datetime
 
 from pydantic import BaseModel, ConfigDict, Field
+from typing import Literal
 
 
 class FollowUpTaskCreate(BaseModel):
@@ -27,3 +28,14 @@ class FollowUpTaskResponse(BaseModel):
     created_at: datetime
 
     model_config = ConfigDict(from_attributes=True)
+
+
+class FollowUpTaskStatusUpdate(BaseModel):
+    """Allowed values when updating a task's status."""
+
+    status: Literal[
+        "pending",
+        "in_progress",
+        "completed",
+        "cancelled",
+    ]
