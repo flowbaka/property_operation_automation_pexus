@@ -74,15 +74,11 @@ def get_lead(
     "/{lead_id}/status",
     response_model=LeadResponse,
 )
-
-
 def update_lead_status(
-    lead_int: int, 
-    status_date: LeadStatusUpdate,
+    lead_id: int,
+    status_data: LeadStatusUpdate,
     database_session: Session = Depends(get_db),
-
 ):
-
     """Update the progress status of a lead."""
 
     lead = database_session.get(Lead, lead_id)
