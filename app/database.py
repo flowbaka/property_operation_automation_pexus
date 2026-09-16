@@ -1,5 +1,7 @@
 from sqlalchemy import URL, create_engine, text
-from sqlalchemy.orm import DeclarativeBase, sessionmaker
+from sqlalchemy.orm import DeclarativeBase, sessionmaker, Session
+from collections.abc import Generator
+
 
 from app.config import settings
 
@@ -34,6 +36,17 @@ SessionLocal = sessionmaker(
     expire_on_commit=False,
 )
 
+
+def get_db() -> Generator[Session, None, None]:
+    """Give an API request a database session and close it afterward."""
+
+    database_session = SessionLocal()
+
+    try:
+        yield database_session
+    finally:
+        database_session.close()
+        
 
 def test_connection():
     with engine.connect() as connection:

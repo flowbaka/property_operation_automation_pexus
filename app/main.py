@@ -1,7 +1,8 @@
 from fastapi import FastAPI
 
+from app.routers.lead import router as lead_router
 
-# Create the API application and publish its metadata in the generated docs.
+
 app = FastAPI(
     title="PropertyOps AI",
     description="Property sales and business automation API",
@@ -9,7 +10,9 @@ app = FastAPI(
 )
 
 
-# Provide a simple health check for clients and deployment tooling.
+app.include_router(lead_router)
+
+
 @app.get("/")
-def read_root() -> dict[str, str]:
+def root():
     return {"message": "PropertyOps AI API is running"}
