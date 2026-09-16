@@ -1,3 +1,9 @@
-from app.schemas.lead import LeadCreate, LeadResponse
-
-from app.schemas.lead import LeadStatusUpdate
+from app.schemas.follow_up_task import (
+    FollowUpTaskCreate,
+    FollowUpTaskResponse,
+)
+from app.schemas.lead import (
+    LeadCreate,
+    LeadResponse,
+    LeadStatusUpdate,
+)

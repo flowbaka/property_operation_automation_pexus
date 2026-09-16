@@ -4,7 +4,7 @@ from alembic import context
 
 from app.database import Base, database_url, engine
 from app.models import Lead
-
+from app.models import FollowUpTask, Lead
 
 config = context.config
 

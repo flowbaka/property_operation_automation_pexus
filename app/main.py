@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 
 from app.routers.lead import router as lead_router
+from app.routers.follow_up_task import router as follow_up_task_router
 
 
 app = FastAPI(
@@ -11,6 +12,7 @@ app = FastAPI(
 
 
 app.include_router(lead_router)
+app.include_router(follow_up_task_router)
 
 
 @app.get("/")
