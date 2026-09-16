@@ -14,6 +14,8 @@ class Settings(BaseSettings):
     DB_NAME: str
     DB_USER: str
     DB_PASSWORD: SecretStr
+    N8N_WEBHOOK_URL: str | None = None
+    N8N_WEBHOOK_TOKEN: SecretStr | None = None
 
     model_config = SettingsConfigDict(
         env_file=BASE_DIR / ".env",

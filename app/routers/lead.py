@@ -1,11 +1,11 @@
-from fastapi import APIRouter, Depends, status, HTTPException
+from fastapi import APIRouter, Depends, status, HTTPException, BackgroundTasks
 from sqlalchemy.orm import Session
 
 from app.database import get_db
 from app.models import Lead
 from app.schemas import LeadCreate, LeadResponse, LeadStatusUpdate
 from sqlalchemy import select               
-
+from app.services.n8n import trigger_new_lead_workflow
 
 router = APIRouter(
     prefix="/leads",
@@ -13,24 +13,33 @@ router = APIRouter(
 )
 
 
-@router.post(
-    "",
-    response_model=LeadResponse,
-    status_code=status.HTTP_201_CREATED,
-)
+@router.post("/", response_model=LeadResponse, status_code=status.HTTP_201_CREATED)
 def create_lead(
     lead_data: LeadCreate,
+    background_tasks: BackgroundTasks,
     database_session: Session = Depends(get_db),
 ):
-    """Validate and save a new customer enquiry."""
-
     new_lead = Lead(**lead_data.model_dump())
 
     database_session.add(new_lead)
     database_session.commit()
     database_session.refresh(new_lead)
 
+    background_tasks.add_task(
+        trigger_new_lead_workflow,
+        {
+            "event": "lead.created",
+            "lead_id": new_lead.id,
+            "name": new_lead.name,
+            "email": new_lead.email,
+            "phone": new_lead.phone,
+            "message": new_lead.message,
+            "source": new_lead.source,
+        },
+    )
+
     return new_lead
+
 
 
 @router.get(
