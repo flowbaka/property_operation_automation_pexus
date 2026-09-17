@@ -1,0 +1,65 @@
+{
+  "name": "Property_Operation_Workflow",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "propertyops-lead",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -256,
+        0
+      ],
+      "id": "759a15a2-70d8-44b0-9f22-2d9d11bae9d9",
+      "name": "PropertyOps - New Lead Automation",
+      "webhookId": "33c9c356-fbe8-46ee-848c-2a29cdb7f4d6"
+    },
+    {
+      "parameters": {
+        "method": "POST",
+        "url": "http://127.0.0.1:8000/follow-up-tasks",
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"lead_id\": {{ $json.body.lead_id }},\n  \"title\": \"Follow up with {{ $json.body.name }}\"\n}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.5,
+      "position": [
+        -32,
+        0
+      ],
+      "id": "e606e4e8-4ebe-4cd5-8ee2-11e26eda0470",
+      "name": "Create Follow-Up Task"
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "PropertyOps - New Lead Automation": {
+      "main": [
+        [
+          {
+            "node": "Create Follow-Up Task",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "6bce4be9-5ad4-403c-9e27-dcf1fb9211f0",
+  "meta": {
+    "instanceId": "7b98c0881b291a4361ea9d585d4eed23a8bea56fe240f26e7f223b7cb866d917"
+  },
+  "nodeGroups": [],
+  "id": "mCD85BBFoZtvtoSH",
+  "tags": []
+}
